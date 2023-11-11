@@ -1,5 +1,7 @@
 import { INUMBER, IOP1, IOP2, IOP3, IVAR, IVARNAME, IFUNCALL, IFUNDEF, IEXPR, IEXPREVAL, IMEMBER, IENDSTATEMENT, IARRAY } from './instruction';
 
+import { Expression } from './expression';
+
 export default function evaluate(tokens, expr, values) {
   var nstack = [];
   var n1, n2, n3;
@@ -68,7 +70,11 @@ export default function evaluate(tokens, expr, values) {
       }
       f = nstack.pop();
       if (f.apply && f.call) {
-        nstack.push(f.apply(undefined, args));
+        const expression = new Expression(expr.tokens, expr.parser);
+
+        Object.freeze(expression);
+
+        nstack.push(f.apply(expression, args));
       } else {
         throw new Error(f + ' is not a function');
       }
