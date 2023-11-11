@@ -1,6 +1,6 @@
 import { INUMBER, IOP1, IOP2, IOP3, IVAR, IVARNAME, IFUNCALL, IFUNDEF, IEXPR, IMEMBER, IENDSTATEMENT, IARRAY } from './instruction';
 
-export default function expressionToString(tokens, toJS) {
+export default function expressionToString(tokens) {
   var nstack = [];
   var n1, n2, n3;
   var f, args, argCount;
@@ -19,30 +19,11 @@ export default function expressionToString(tokens, toJS) {
       n2 = nstack.pop();
       n1 = nstack.pop();
       f = item.value;
-      if (toJS) {
-        if (f === '^') {
-          nstack.push('Math.pow(' + n1 + ', ' + n2 + ')');
-        } else if (f === 'and') {
-          nstack.push('(!!' + n1 + ' && !!' + n2 + ')');
-        } else if (f === 'or') {
-          nstack.push('(!!' + n1 + ' || !!' + n2 + ')');
-        } else if (f === '||') {
-          nstack.push('(function(a,b){ return Array.isArray(a) && Array.isArray(b) ? a.concat(b) : String(a) + String(b); }((' + n1 + '),(' + n2 + ')))');
-        } else if (f === '==') {
-          nstack.push('(' + n1 + ' === ' + n2 + ')');
-        } else if (f === '!=') {
-          nstack.push('(' + n1 + ' !== ' + n2 + ')');
-        } else if (f === '[') {
-          nstack.push(n1 + '[(' + n2 + ') | 0]');
-        } else {
-          nstack.push('(' + n1 + ' ' + f + ' ' + n2 + ')');
-        }
+
+      if (f === '[') {
+        nstack.push(n1 + '[' + n2 + ']');
       } else {
-        if (f === '[') {
-          nstack.push(n1 + '[' + n2 + ']');
-        } else {
-          nstack.push('(' + n1 + ' ' + f + ' ' + n2 + ')');
-        }
+        nstack.push('(' + n1 + ' ' + f + ' ' + n2 + ')');
       }
     } else if (type === IOP3) {
       n3 = nstack.pop();
@@ -61,14 +42,6 @@ export default function expressionToString(tokens, toJS) {
       f = item.value;
       if (f === '-' || f === '+') {
         nstack.push('(' + f + n1 + ')');
-      } else if (toJS) {
-        if (f === 'not') {
-          nstack.push('(' + '!' + n1 + ')');
-        } else if (f === '!') {
-          nstack.push('fac(' + n1 + ')');
-        } else {
-          nstack.push(f + '(' + n1 + ')');
-        }
       } else if (f === '!') {
         nstack.push('(' + n1 + '!)');
       } else {
@@ -90,11 +63,8 @@ export default function expressionToString(tokens, toJS) {
         args.unshift(nstack.pop());
       }
       n1 = nstack.pop();
-      if (toJS) {
-        nstack.push('(' + n1 + ' = function(' + args.join(', ') + ') { return ' + n2 + ' })');
-      } else {
-        nstack.push('(' + n1 + '(' + args.join(', ') + ') = ' + n2 + ')');
-      }
+
+      nstack.push('(' + n1 + '(' + args.join(', ') + ') = ' + n2 + ')');
     } else if (type === IMEMBER) {
       n1 = nstack.pop();
       nstack.push(n1 + '.' + item.value);
@@ -106,20 +76,18 @@ export default function expressionToString(tokens, toJS) {
       }
       nstack.push('[' + args.join(', ') + ']');
     } else if (type === IEXPR) {
-      nstack.push('(' + expressionToString(item.value, toJS) + ')');
+      nstack.push('(' + expressionToString(item.value) + ')');
     } else if (type === IENDSTATEMENT) {
       // eslint-disable no-empty
     } else {
       throw new Error('invalid Expression');
     }
   }
+
   if (nstack.length > 1) {
-    if (toJS) {
-      nstack = [ nstack.join(',') ];
-    } else {
-      nstack = [ nstack.join(';') ];
-    }
+    nstack = [ nstack.join(';') ];
   }
+
   return String(nstack[0]);
 }
 

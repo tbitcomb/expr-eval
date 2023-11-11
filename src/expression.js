@@ -53,9 +53,16 @@ Expression.prototype.variables = function (options) {
 };
 
 Expression.prototype.toJSFunction = function (param, variables) {
-  var expr = this;
-  var f = new Function(param, 'with(this.functions) with (this.ternaryOps) with (this.binaryOps) with (this.unaryOps) { return ' + expressionToString(this.simplify(variables).tokens, true) + '; }'); // eslint-disable-line no-new-func
-  return function () {
-    return f.apply(expr, arguments);
+  const expr = this.simplify(variables);
+  const paramList = Array.isArray(param) ? param : (param || '').split(/,\s*/);
+
+  return function (...args) {
+    const values = paramList.reduce((hash, variable, i) => {
+      hash[variable] = args[i];
+
+      return hash;
+    } , {});
+
+    return expr.evaluate(values);
   };
 };
