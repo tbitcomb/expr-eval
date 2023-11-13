@@ -270,16 +270,19 @@ export function min(array) {
   }
 }
 
-export function arrayMap(f, a) {
+export async function arrayMap(f, a) {
   if (typeof f !== 'function') {
     throw new Error('First argument to map is not a function');
   }
   if (!Array.isArray(a)) {
     throw new Error('Second argument to map is not an array');
   }
-  return a.map(function (x, i) {
-    return f(x, i);
-  });
+
+  return await Promise.all(
+    a.map(function (x, i) {
+      return f(x, i);
+    }),
+  );
 }
 
 export function arrayFold(f, init, a) {
@@ -294,15 +297,19 @@ export function arrayFold(f, init, a) {
   }, init);
 }
 
-export function arrayFilter(f, a) {
+export async function arrayFilter(f, a) {
   if (typeof f !== 'function') {
     throw new Error('First argument to filter is not a function');
   }
   if (!Array.isArray(a)) {
     throw new Error('Second argument to filter is not an array');
   }
-  return a.filter(function (x, i) {
-    return f(x, i);
+
+  const promises = a.map((x, i) => f(x, i));
+  const values = await Promise.all(promises);
+
+  return a.filter(function (_, i) {
+    return values[i];
   });
 }
 

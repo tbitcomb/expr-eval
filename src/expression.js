@@ -56,13 +56,13 @@ Expression.prototype.toJSFunction = function (param, variables) {
   const expr = this.simplify(variables);
   const paramList = Array.isArray(param) ? param : (param || '').split(/,\s*/);
 
-  return function (...args) {
+  return async function (...args) {
     const values = paramList.reduce((hash, variable, i) => {
       hash[variable] = args[i];
 
       return hash;
     } , {});
 
-    return expr.evaluate(values);
+    return await expr.evaluate(values);
   };
 };

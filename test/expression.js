@@ -5,309 +5,309 @@
 var assert = require('assert');
 var Parser = require('../dist/bundle').Parser;
 
-describe('Expression', function () {
-  describe('evaluate()', function () {
-    it('2 ^ x', function () {
-      assert.strictEqual(Parser.evaluate('2 ^ x', { x: 3 }), 8);
+describe('Expression', async function () {
+  describe('evaluate()', async function () {
+    it('2 ^ x', async function () {
+      assert.strictEqual(await Parser.evaluate('2 ^ x', { x: 3 }), 8);
     });
 
-    it('2 * x + 1', function () {
-      assert.strictEqual(Parser.evaluate('2 * x + 1', { x: 3 }), 7);
+    it('2 * x + 1', async function () {
+      assert.strictEqual(await Parser.evaluate('2 * x + 1', { x: 3 }), 7);
     });
 
-    it('2 + 3 * x', function () {
-      assert.strictEqual(Parser.evaluate('2 + 3 * x', { x: 4 }), 14);
+    it('2 + 3 * x', async function () {
+      assert.strictEqual(await Parser.evaluate('2 + 3 * x', { x: 4 }), 14);
     });
 
-    it('(2 + 3) * x', function () {
-      assert.strictEqual(Parser.evaluate('(2 + 3) * x', { x: 4 }), 20);
+    it('(2 + 3) * x', async function () {
+      assert.strictEqual(await Parser.evaluate('(2 + 3) * x', { x: 4 }), 20);
     });
 
-    it('2-3^x', function () {
-      assert.strictEqual(Parser.evaluate('2-3^x', { x: 4 }), -79);
+    it('2-3^x', async function () {
+      assert.strictEqual(await Parser.evaluate('2-3^x', { x: 4 }), -79);
     });
 
-    it('-2-3^x', function () {
-      assert.strictEqual(Parser.evaluate('-2-3^x', { x: 4 }), -83);
+    it('-2-3^x', async function () {
+      assert.strictEqual(await Parser.evaluate('-2-3^x', { x: 4 }), -83);
     });
 
-    it('-3^x', function () {
-      assert.strictEqual(Parser.evaluate('-3^x', { x: 4 }), -81);
+    it('-3^x', async function () {
+      assert.strictEqual(await Parser.evaluate('-3^x', { x: 4 }), -81);
     });
 
-    it('(-3)^x', function () {
-      assert.strictEqual(Parser.evaluate('(-3)^x', { x: 4 }), 81);
+    it('(-3)^x', async function () {
+      assert.strictEqual(await Parser.evaluate('(-3)^x', { x: 4 }), 81);
     });
 
-    it('2 ^ x.y', function () {
-      assert.strictEqual(Parser.evaluate('2^x.y', { x: { y: 3 } }), 8);
+    it('2 ^ x.y', async function () {
+      assert.strictEqual(await Parser.evaluate('2^x.y', { x: { y: 3 } }), 8);
     });
 
-    it('2 + 3 * foo.bar.baz', function () {
-      assert.strictEqual(Parser.evaluate('2 + 3 * foo.bar.baz', { foo: { bar: { baz: 4 } } }), 14);
+    it('2 + 3 * foo.bar.baz', async function () {
+      assert.strictEqual(await Parser.evaluate('2 + 3 * foo.bar.baz', { foo: { bar: { baz: 4 } } }), 14);
     });
 
-    it('10/-1', function () {
-      assert.strictEqual(Parser.evaluate('10/-1'), -10);
+    it('10/-1', async function () {
+      assert.strictEqual(await Parser.evaluate('10/-1'), -10);
     });
 
-    it('10*-1', function () {
-      assert.strictEqual(Parser.evaluate('10*-1'), -10);
+    it('10*-1', async function () {
+      assert.strictEqual(await Parser.evaluate('10*-1'), -10);
     });
 
-    it('10*-x', function () {
-      assert.strictEqual(Parser.evaluate('10*-x', { x: 1 }), -10);
+    it('10*-x', async function () {
+      assert.strictEqual(await Parser.evaluate('10*-x', { x: 1 }), -10);
     });
 
-    it('10+-1', function () {
-      assert.strictEqual(Parser.evaluate('10+-1'), 9);
+    it('10+-1', async function () {
+      assert.strictEqual(await Parser.evaluate('10+-1'), 9);
     });
 
-    it('10/+1', function () {
-      assert.strictEqual(Parser.evaluate('10/+1'), 10);
+    it('10/+1', async function () {
+      assert.strictEqual(await Parser.evaluate('10/+1'), 10);
     });
 
-    it('10*+1', function () {
-      assert.strictEqual(Parser.evaluate('10*+1'), 10);
+    it('10*+1', async function () {
+      assert.strictEqual(await Parser.evaluate('10*+1'), 10);
     });
 
-    it('10*+x', function () {
-      assert.strictEqual(Parser.evaluate('10*+x', { x: 1 }), 10);
+    it('10*+x', async function () {
+      assert.strictEqual(await Parser.evaluate('10*+x', { x: 1 }), 10);
     });
 
-    it('10+ +1', function () {
-      assert.strictEqual(Parser.evaluate('10+ +1'), 11);
+    it('10+ +1', async function () {
+      assert.strictEqual(await Parser.evaluate('10+ +1'), 11);
     });
 
-    it('10/-2', function () {
-      assert.strictEqual(Parser.evaluate('10/-2'), -5);
+    it('10/-2', async function () {
+      assert.strictEqual(await Parser.evaluate('10/-2'), -5);
     });
 
-    it('2^-4', function () {
-      assert.strictEqual(Parser.evaluate('2^-4'), 1 / 16);
+    it('2^-4', async function () {
+      assert.strictEqual(await Parser.evaluate('2^-4'), 1 / 16);
     });
 
-    it('2^(-4)', function () {
-      assert.strictEqual(Parser.evaluate('2^(-4)'), 1 / 16);
+    it('2^(-4)', async function () {
+      assert.strictEqual(await Parser.evaluate('2^(-4)'), 1 / 16);
     });
 
-    it('\'as\' || \'df\'', function () {
-      assert.strictEqual(Parser.evaluate('\'as\' || \'df\''), 'asdf');
+    it('\'as\' || \'df\'', async function () {
+      assert.strictEqual(await Parser.evaluate('\'as\' || \'df\''), 'asdf');
     });
 
-    it('[1, 2] || [3, 4] || [5, 6]', function () {
-      assert.deepStrictEqual(Parser.evaluate('[1, 2] || [3, 4] || [5, 6]'), [ 1, 2, 3, 4, 5, 6 ]);
+    it('[1, 2] || [3, 4] || [5, 6]', async function () {
+      assert.deepStrictEqual(await Parser.evaluate('[1, 2] || [3, 4] || [5, 6]'), [ 1, 2, 3, 4, 5, 6 ]);
     });
 
-    it('should fail with undefined variables', function () {
-      assert.throws(function () { Parser.evaluate('x + 1'); }, Error);
+    it('should fail with undefined variables', async function () {
+      assert.rejects(async function () { await Parser.evaluate('x + 1'); }, Error);
     });
 
-    it('x = 3 * 2 + 1', function () {
+    it('x = 3 * 2 + 1', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('x = 3 * 2 + 1'), 7);
+      assert.strictEqual(await Parser.evaluate('x = 3 * 2 + 1'), 7);
     });
 
-    it('x = x * 2 + 1', function () {
-      var parser = new Parser();
-      var obj = {};
-      parser.evaluate('x = 3 * 2 + 1', obj);
-      assert.strictEqual(parser.evaluate('x = x * 2 + 1', obj), 15);
-    });
-
-    it('y = x = x * 2 + 1', function () {
+    it('x = x * 2 + 1', async function () {
       var parser = new Parser();
       var obj = {};
-      parser.evaluate('x = 3 * 2 + 1', obj);
-      assert.strictEqual(parser.evaluate('y = x = x * 2 + 1', obj), 15);
+      await parser.evaluate('x = 3 * 2 + 1', obj);
+      assert.strictEqual(await Parser.evaluate('x = x * 2 + 1', obj), 15);
+    });
+
+    it('y = x = x * 2 + 1', async function () {
+      var parser = new Parser();
+      var obj = {};
+      await parser.evaluate('x = 3 * 2 + 1', obj);
+      assert.strictEqual(await Parser.evaluate('y = x = x * 2 + 1', obj), 15);
       assert.strictEqual(15, obj.x);
       assert.strictEqual(15, obj.y);
     });
 
-    it('y = y = 2*z', function () {
+    it('y = y = 2*z', async function () {
       var parser = new Parser();
       var obj = { y: 5, z: 3 };
-      assert.strictEqual(parser.evaluate('x = y = 2*z', obj), 6);
+      assert.strictEqual(await Parser.evaluate('x = y = 2*z', obj), 6);
       assert.strictEqual(6, obj.x);
       assert.strictEqual(6, obj.y);
       assert.strictEqual(3, obj.z);
     });
 
-    it('f(x) = x * x', function () {
+    it('f(x) = x * x', async function () {
       var parser = new Parser();
       var obj = { f: null };
-      assert.strictEqual(parser.evaluate('f(x) = x * x', obj) instanceof Function, true);
+      assert.strictEqual(await Parser.evaluate('f(x) = x * x', obj) instanceof Function, true);
       assert.strictEqual(obj.f instanceof Function, true);
-      assert.strictEqual(obj.f(3), 9);
+      assert.strictEqual(await obj.f(3), 9);
     });
 
-    it('(f(x) = x * x)(3)', function () {
+    it('(f(x) = x * x)(3)', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('(f(x) = x * x)(3)'), 9);
+      assert.strictEqual(await Parser.evaluate('(f(x) = x * x)(3)'), 9);
     });
 
-    it('y = 5; f(x) = x * y', function () {
+    it('y = 5; f(x) = x * y', async function () {
       var parser = new Parser();
       var obj = { f: null };
-      assert.strictEqual(parser.evaluate('y = 5; f(x) = x * y', obj) instanceof Function, true);
-      assert.strictEqual(obj.f instanceof Function, true);
-      assert.strictEqual(obj.f(3), 15);
+      assert.strictEqual(await Parser.evaluate('y = 5; f(x) = x * y', obj) instanceof Function, true);
+      assert.strictEqual(await obj.f instanceof Function, true);
+      assert.strictEqual(await obj.f(3), 15);
     });
 
-    it('y = 5; (f(x) = x * y)(3)', function () {
+    it('y = 5; (f(x) = x * y)(3)', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('y = 5; (f(x) = x * y)(3)'), 15);
+      assert.strictEqual(await Parser.evaluate('y = 5; (f(x) = x * y)(3)'), 15);
     });
 
-    it('(f(x) = x > 1 ? x*f(x-1) : 1)(5)', function () {
+    it('(f(x) = x > 1 ? x*f(x-1) : 1)(5)', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('(f(x) = x > 1 ? x*f(x-1) : 1)(5)'), 120);
-      assert.strictEqual(parser.evaluate('(f(x) = x > 1 ? x*f(x-1) : 1); f(6)'), 720);
+      assert.strictEqual(await Parser.evaluate('(f(x) = x > 1 ? x*f(x-1) : 1)(5)'), 120);
+      assert.strictEqual(await Parser.evaluate('(f(x) = x > 1 ? x*f(x-1) : 1); f(6)'), 720);
     });
 
-    it('f(x) = x > 1 ? x*f(x-1) : 1; f(6); f(5)', function () {
+    it('f(x) = x > 1 ? x*f(x-1) : 1; f(6); f(5)', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('f(x) = x > 1 ? x*f(x-1) : 1; f(6)'), 720);
-      assert.strictEqual(parser.evaluate('f(x) = x > 1 ? x*f(x-1) : 1; f(6); f(5)'), 120);
+      assert.strictEqual(await Parser.evaluate('f(x) = x > 1 ? x*f(x-1) : 1; f(6)'), 720);
+      assert.strictEqual(await Parser.evaluate('f(x) = x > 1 ? x*f(x-1) : 1; f(6); f(5)'), 120);
     });
 
-    it('f(x) = x > 1 ? x*f(x-1) : 1', function () {
+    it('f(x) = x > 1 ? x*f(x-1) : 1', async function () {
       var parser = new Parser();
       var obj = { f: null };
-      assert.strictEqual(parser.evaluate('f(x) = x > 1 ? x*f(x-1) : 1', obj) instanceof Function, true);
+      assert.strictEqual(await Parser.evaluate('f(x) = x > 1 ? x*f(x-1) : 1', obj) instanceof Function, true);
       assert.strictEqual(obj.f instanceof Function, true);
-      assert.strictEqual(obj.f(6), 720);
-      assert.strictEqual(obj.f(5), 120);
-      assert.strictEqual(obj.f(4), 24);
-      assert.strictEqual(obj.f(3), 6);
+      assert.strictEqual(await obj.f(6), 720);
+      assert.strictEqual(await obj.f(5), 120);
+      assert.strictEqual(await obj.f(4), 24);
+      assert.strictEqual(await obj.f(3), 6);
     });
 
-    it('3 ; 2 ; 1', function () {
-      assert.strictEqual(Parser.evaluate('3 ; 2 ; 1'), 1);
+    it('3 ; 2 ; 1', async function () {
+      assert.strictEqual(await Parser.evaluate('3 ; 2 ; 1'), 1);
     });
 
-    it('3 ; 2 ; 1 ;', function () {
-      assert.strictEqual(Parser.evaluate('3 ; 2 ; 1 ;'), 1);
+    it('3 ; 2 ; 1 ;', async function () {
+      assert.strictEqual(await Parser.evaluate('3 ; 2 ; 1 ;'), 1);
     });
 
-    it('x = 3 ; y = 4 ; z = x * y', function () {
+    it('x = 3 ; y = 4 ; z = x * y', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('x = 3 ; y = 4 ; z = x * y'), 12);
+      assert.strictEqual(await Parser.evaluate('x = 3 ; y = 4 ; z = x * y'), 12);
     });
 
-    it('x=3;y=4;z=x*y;', function () {
+    it('x=3;y=4;z=x*y;', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('x=3;y=4;z=x*y;'), 12);
+      assert.strictEqual(await Parser.evaluate('x=3;y=4;z=x*y;'), 12);
     });
 
-    it('1 + (( 3 ; 4 ) + 5)', function () {
+    it('1 + (( 3 ; 4 ) + 5)', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('1 + (( 3 ; 4 ) + 5)'), 10);
+      assert.strictEqual(await Parser.evaluate('1 + (( 3 ; 4 ) + 5)'), 10);
     });
 
-    it('2+(x=3;y=4;z=x*y)+5', function () {
+    it('2+(x=3;y=4;z=x*y)+5', async function () {
       var parser = new Parser();
-      assert.strictEqual(parser.evaluate('2+(x=3;y=4;z=x*y)+5'), 19);
+      assert.strictEqual(await Parser.evaluate('2+(x=3;y=4;z=x*y)+5'), 19);
     });
 
-    it('[1, 2, 3]', function () {
-      assert.deepStrictEqual(Parser.evaluate('[1, 2, 3]'), [1, 2, 3]);
+    it('[1, 2, 3]', async function () {
+      assert.deepStrictEqual(await Parser.evaluate('[1, 2, 3]'), [1, 2, 3]);
     });
 
-    it('[1, 2, 3, [4, [5, 6]]]', function () {
-      assert.deepStrictEqual(Parser.evaluate('[1, 2, 3, [4, [5, 6]]]'), [1, 2, 3, [4, [5, 6]]]);
+    it('[1, 2, 3, [4, [5, 6]]]', async function () {
+      assert.deepStrictEqual(await Parser.evaluate('[1, 2, 3, [4, [5, 6]]]'), [1, 2, 3, [4, [5, 6]]]);
     });
 
-    it('["a", ["b", ["c"]], true, 1 + 2 + 3]', function () {
-      assert.deepStrictEqual(Parser.evaluate('["a", ["b", ["c"]], true, 1 + 2 + 3]'), ['a', ['b', ['c']], true, 6]);
+    it('["a", ["b", ["c"]], true, 1 + 2 + 3]', async function () {
+      assert.deepStrictEqual(await Parser.evaluate('["a", ["b", ["c"]], true, 1 + 2 + 3]'), ['a', ['b', ['c']], true, 6]);
     });
 
-    it('should fail trying to call a non-function', function () {
-      assert.throws(function () { Parser.evaluate('f()', { f: 2 }); }, Error);
+    it('should fail trying to call a non-function', async function () {
+      assert.rejects(async function () { await Parser.evaluate('f()', { f: 2 }); }, Error);
     });
 
-    it('$x * $y_+$a1*$z - $b2', function () {
-      assert.strictEqual(Parser.evaluate('$x * $y_+$a1*$z - $b2', { $a1: 3, $b2: 5, $x: 7, $y_: 9, $z: 11 }), 91);
+    it('$x * $y_+$a1*$z - $b2', async function () {
+      assert.strictEqual(await Parser.evaluate('$x * $y_+$a1*$z - $b2', { $a1: 3, $b2: 5, $x: 7, $y_: 9, $z: 11 }), 91);
     });
 
-    it('max(conf.limits.lower, conf.limits.upper)', function () {
-      assert.strictEqual(Parser.evaluate('max(conf.limits.lower, conf.limits.upper)', { conf: { limits: { lower: 4, upper: 9 } } }), 9);
+    it('max(conf.limits.lower, conf.limits.upper)', async function () {
+      assert.strictEqual(await Parser.evaluate('max(conf.limits.lower, conf.limits.upper)', { conf: { limits: { lower: 4, upper: 9 } } }), 9);
     });
 
-    it('fn.max(conf.limits.lower, conf.limits.upper)', function () {
-      assert.strictEqual(Parser.evaluate('fn.max(conf.limits.lower, conf.limits.upper)', { fn: { max: Math.max }, conf: { limits: { lower: 4, upper: 9 } } }), 9);
+    it('fn.max(conf.limits.lower, conf.limits.upper)', async function () {
+      assert.strictEqual(await Parser.evaluate('fn.max(conf.limits.lower, conf.limits.upper)', { fn: { max: Math.max }, conf: { limits: { lower: 4, upper: 9 } } }), 9);
     });
 
-    it('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]', function () {
-      assert.strictEqual(JSON.stringify(Parser.evaluate('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]')), JSON.stringify([1, 5, 20, 6 / 7, [8, 9, 10], '11']));
+    it('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]', async function () {
+      assert.strictEqual(JSON.stringify(await Parser.evaluate('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]')), JSON.stringify([1, 5, 20, 6 / 7, [8, 9, 10], '11']));
     });
 
-    it('1 ? 1 : 0', function () {
-      assert.strictEqual(Parser.evaluate('1 ? 1 : 0'), 1);
+    it('1 ? 1 : 0', async function () {
+      assert.strictEqual(await Parser.evaluate('1 ? 1 : 0'), 1);
     });
 
-    it('0 ? 1 : 0', function () {
-      assert.strictEqual(Parser.evaluate('0 ? 1 : 0'), 0);
+    it('0 ? 1 : 0', async function () {
+      assert.strictEqual(await Parser.evaluate('0 ? 1 : 0'), 0);
     });
 
-    it('1==1 or 2==1 ? 39 : 0', function () {
-      assert.strictEqual(Parser.evaluate('1==1 or 2==1 ? 39 : 0'), 39);
+    it('1==1 or 2==1 ? 39 : 0', async function () {
+      assert.strictEqual(await Parser.evaluate('1==1 or 2==1 ? 39 : 0'), 39);
     });
 
-    it('1==1 or 1==2 ? -4 + 8 : 0', function () {
-      assert.strictEqual(Parser.evaluate('1==1 or 1==2 ? -4 + 8 : 0'), 4);
+    it('1==1 or 1==2 ? -4 + 8 : 0', async function () {
+      assert.strictEqual(await Parser.evaluate('1==1 or 1==2 ? -4 + 8 : 0'), 4);
     });
 
-    it('3 and 6 ? 45 > 5 * 11 ? 3 * 3 : 2.4 : 0', function () {
-      assert.strictEqual(Parser.evaluate('3 and 6 ? 45 > 5 * 11 ? 3 * 3 : 2.4 : 0'), 2.4);
+    it('3 and 6 ? 45 > 5 * 11 ? 3 * 3 : 2.4 : 0', async function () {
+      assert.strictEqual(await Parser.evaluate('3 and 6 ? 45 > 5 * 11 ? 3 * 3 : 2.4 : 0'), 2.4);
     });
   });
 
-  describe('substitute()', function () {
+  describe('substitute()', async function () {
     var parser = new Parser();
 
     var expr = parser.parse('2 * x + 1');
     var expr2 = expr.substitute('x', '4 * x');
-    it('((2*(4*x))+1)', function () {
-      assert.strictEqual(expr2.evaluate({ x: 3 }), 25);
+    it('((2*(4*x))+1)', async function () {
+      assert.strictEqual(await expr2.evaluate({ x: 3 }), 25);
     });
 
     var expr3 = expr.substitute('x', '4 * x.y.z');
-    it('((2*(4*x.y.z))+1)', function () {
-      assert.strictEqual(expr3.evaluate({ x: { y: { z: 3 } } }), 25);
+    it('((2*(4*x.y.z))+1)', async function () {
+      assert.strictEqual(await expr3.evaluate({ x: { y: { z: 3 } } }), 25);
     });
 
     var expr4 = parser.parse('-x').substitute('x', '-4 + y');
-    it('-(-4 + y)', function () {
+    it('-(-4 + y)', async function () {
       assert.strictEqual(expr4.toString(), '(-((-4) + y))');
-      assert.strictEqual(expr4.evaluate({ y: 2 }), 2);
+      assert.strictEqual(await expr4.evaluate({ y: 2 }), 2);
     });
 
     var expr5 = parser.parse('x + y').substitute('y', 'x ? 1 : 2');
-    it('x + (x ? 1 : 2)', function () {
+    it('x + (x ? 1 : 2)', async function () {
       assert.strictEqual(expr5.toString(), '(x + (x ? (1) : (2)))');
-      assert.strictEqual(expr5.evaluate({ x: 3 }), 4);
-      assert.strictEqual(expr5.evaluate({ x: 0 }), 2);
+      assert.strictEqual(await expr5.evaluate({ x: 3 }), 4);
+      assert.strictEqual(await expr5.evaluate({ x: 0 }), 2);
     });
 
     var expr6 = parser.parse('x ? y : z').substitute('y', 'x');
-    it('x ? x : z', function () {
+    it('x ? x : z', async function () {
       assert.strictEqual(expr6.toString(), '(x ? (x) : (z))');
-      assert.strictEqual(expr6.evaluate({ x: 1, z: 2 }), 1);
-      assert.strictEqual(expr6.evaluate({ x: 0, z: 2 }), 2);
+      assert.strictEqual(await expr6.evaluate({ x: 1, z: 2 }), 1);
+      assert.strictEqual(await expr6.evaluate({ x: 0, z: 2 }), 2);
     });
 
     var expr7 = expr.substitute('x', parser.parse('4 * x'));
-    it('should substitute expressions', function () {
+    it('should substitute expressions', async function () {
       assert.strictEqual(expr7.toString(), '((2 * (4 * x)) + 1)');
-      assert.strictEqual(expr7.evaluate({ x: 3 }), 25);
+      assert.strictEqual(await expr7.evaluate({ x: 3 }), 25);
     });
 
     var expr8 = parser.parse('x = x + 1').substitute('x', '7');
-    it('should not replace assigned variables', function () {
+    it('should not replace assigned variables', async function () {
       assert.strictEqual(expr8.toString(), '(x = ((7 + 1)))');
       var vars = { x: 42 };
-      assert.strictEqual(expr8.evaluate(vars), 8);
+      assert.strictEqual(await expr8.evaluate(vars), 8);
       assert.strictEqual(vars.x, 8);
     });
   });
@@ -671,146 +671,146 @@ describe('Expression', function () {
     });
   });
 
-  describe('toJSFunction()', function () {
+  describe('toJSFunction()', async function () {
     var parser = new Parser();
 
-    it('2 ^ x', function () {
+    it('2 ^ x', async function () {
       var expr = parser.parse('2 ^ x');
-      var f = expr.toJSFunction('x');
-      assert.strictEqual(f(2), 4);
-      assert.strictEqual(f(3), 8);
-      assert.strictEqual(f(-1), 0.5);
+      var f = await expr.toJSFunction('x');
+      assert.strictEqual(await f(2), 4);
+      assert.strictEqual(await f(3), 8);
+      assert.strictEqual(await f(-1), 0.5);
     });
 
-    it('x || y', function () {
+    it('x || y', async function () {
       var expr = parser.parse('x || y');
-      var f = expr.toJSFunction('x, y');
-      assert.strictEqual(f(4, 2), '42');
+      var f = await expr.toJSFunction('x, y');
+      assert.strictEqual(await f(4, 2), '42');
     });
 
-    it('[4, 3] || [1, 2]', function () {
+    it('[4, 3] || [1, 2]', async function () {
       var expr = parser.parse('x || y');
-      var f = expr.toJSFunction('x, y');
-      assert.deepStrictEqual(f([ 4, 3 ], [ 1, 2 ]), [ 4, 3, 1, 2 ]);
+      var f = await expr.toJSFunction('x, y');
+      assert.deepStrictEqual(await f([ 4, 3 ], [ 1, 2 ]), [ 4, 3, 1, 2 ]);
     });
 
-    it('x = x + 1', function () {
+    it('x = x + 1', async function () {
       var expr = parser.parse('x = x + 1');
-      var f = expr.toJSFunction('x');
-      assert.strictEqual(f(4), 5);
+      var f = await expr.toJSFunction('x');
+      assert.strictEqual(await f(4), 5);
     });
 
-    it('y = 4 ; z = x < 5 ? x * y : x / y', function () {
+    it('y = 4 ; z = x < 5 ? x * y : x / y', async function () {
       var expr = parser.parse('y = 4 ; z = x < 5 ? x * y : x / y');
-      var f = expr.toJSFunction('x');
-      assert.strictEqual(f(3), 12);
+      var f = await expr.toJSFunction('x');
+      assert.strictEqual(await f(3), 12);
     });
 
-    it('(sqrt y) + max(3, 1) * (x ? -y : z)', function () {
+    it('(sqrt y) + max(3, 1) * (x ? -y : z)', async function () {
       var expr = parser.parse('(sqrt y) + max(3, 1) * (x ? -y : z)');
-      var f = expr.toJSFunction('x,y,z');
-      assert.strictEqual(f(true, 4, 3), -10);
-      assert.strictEqual(f(false, 4, 3), 11);
+      var f = await expr.toJSFunction('x,y,z');
+      assert.strictEqual(await f(true, 4, 3), -10);
+      assert.strictEqual(await f(false, 4, 3), 11);
     });
 
-    it('should throw when missing parameter', function () {
+    it('should throw when missing parameter', async function () {
       var expr = parser.parse('x * (y * atan(1))');
-      var f = expr.toJSFunction(['x', 'y']);
-      assert.strictEqual(f(2, 4), 6.283185307179586);
+      var f = await expr.toJSFunction(['x', 'y']);
+      assert.strictEqual(await f(2, 4), 6.283185307179586);
 
-      f = expr.toJSFunction(['y']);
-      assert.throws(function () { return f(4); }, Error);
+      f = await expr.toJSFunction(['y']);
+      assert.rejects(async function () { return await f(4); }, Error);
     });
 
-    it('should simplify first', function () {
+    it('should simplify first', async function () {
       var expr = parser.parse('x * (y * atan(1))');
-      var f = expr.toJSFunction(['y'], { x: 2 });
-      assert.strictEqual(f(4), 6.283185307179586);
+      var f = await expr.toJSFunction(['y'], { x: 2 });
+      assert.strictEqual(await f(4), 6.283185307179586);
     });
 
-    it('2 * x + 1', function () {
-      assert.strictEqual(parser.parse('2 * x + 1').toJSFunction('x')(4), 9);
+    it('2 * x + 1', async function () {
+      assert.strictEqual(await parser.parse('2 * x + 1').toJSFunction('x')(4), 9);
     });
 
-    it('2 + 3 * x', function () {
-      assert.strictEqual(parser.parse('2 + 3 * x').toJSFunction('x')(5), 17);
+    it('2 + 3 * x', async function () {
+      assert.strictEqual(await parser.parse('2 + 3 * x').toJSFunction('x')(5), 17);
     });
 
-    it('2-3^x', function () {
-      assert.strictEqual(parser.parse('2-3^x').toJSFunction('x')(2), -7);
+    it('2-3^x', async function () {
+      assert.strictEqual(await parser.parse('2-3^x').toJSFunction('x')(2), -7);
     });
 
-    it('-2-3^x', function () {
-      assert.strictEqual(parser.parse('-2-3^x').toJSFunction('x')(2), -11);
+    it('-2-3^x', async function () {
+      assert.strictEqual(await parser.parse('-2-3^x').toJSFunction('x')(2), -11);
     });
 
-    it('-3^x', function () {
-      assert.strictEqual(parser.parse('-3^x').toJSFunction('x')(4), -81);
+    it('-3^x', async function () {
+      assert.strictEqual(await parser.parse('-3^x').toJSFunction('x')(4), -81);
     });
 
-    it('(-3)^x', function () {
-      assert.strictEqual(parser.parse('(-3)^x').toJSFunction('x')(4), 81);
+    it('(-3)^x', async function () {
+      assert.strictEqual(await parser.parse('(-3)^x').toJSFunction('x')(4), 81);
     });
 
-    it('2 ^ x.y', function () {
-      assert.strictEqual(parser.parse('2^x.y').toJSFunction('x')({ y: 5 }), 32);
+    it('2 ^ x.y', async function () {
+      assert.strictEqual(await parser.parse('2^x.y').toJSFunction('x')({ y: 5 }), 32);
     });
 
-    it('2 + 3 * foo.bar.baz', function () {
-      assert.strictEqual(parser.parse('2 + 3 * foo.bar.baz').toJSFunction('foo')({ bar: { baz: 5 } }), 17);
+    it('2 + 3 * foo.bar.baz', async function () {
+      assert.strictEqual(await parser.parse('2 + 3 * foo.bar.baz').toJSFunction('foo')({ bar: { baz: 5 } }), 17);
     });
 
-    it('sqrt 10/-1', function () {
-      assert.strictEqual(parser.parse('sqrt 10/-1').toJSFunction()(), -Math.sqrt(10));
+    it('sqrt 10/-1', async function () {
+      assert.strictEqual(await parser.parse('sqrt 10/-1').toJSFunction()(), -Math.sqrt(10));
     });
 
-    it('10*-1', function () {
-      assert.strictEqual(parser.parse('10*-1').toJSFunction()(), -10);
+    it('10*-1', async function () {
+      assert.strictEqual(await parser.parse('10*-1').toJSFunction()(), -10);
     });
 
-    it('10+-1', function () {
-      assert.strictEqual(parser.parse('10+-1').toJSFunction()(), 9);
+    it('10+-1', async function () {
+      assert.strictEqual(await parser.parse('10+-1').toJSFunction()(), 9);
     });
 
-    it('10+ +1', function () {
-      assert.strictEqual(parser.parse('10+ +1').toJSFunction()(), 11);
+    it('10+ +1', async function () {
+      assert.strictEqual(await parser.parse('10+ +1').toJSFunction()(), 11);
     });
 
-    it('sin 2^-4', function () {
-      assert.strictEqual(parser.parse('sin 2^-4').toJSFunction('x')(4), Math.sin(1 / 16));
+    it('sin 2^-4', async function () {
+      assert.strictEqual(await parser.parse('sin 2^-4').toJSFunction('x')(4), Math.sin(1 / 16));
     });
 
-    it('a ? b : c', function () {
-      assert.strictEqual(parser.parse('a ? b : c').toJSFunction('a,b,c')(1, 2, 3), 2);
-      assert.strictEqual(parser.parse('a ? b : c').toJSFunction('a,b,c')(0, 2, 3), 3);
+    it('a ? b : c', async function () {
+      assert.strictEqual(await parser.parse('a ? b : c').toJSFunction('a,b,c')(1, 2, 3), 2);
+      assert.strictEqual(await parser.parse('a ? b : c').toJSFunction('a,b,c')(0, 2, 3), 3);
     });
 
-    it('a ? b : c ? d : e', function () {
-      assert.strictEqual(parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(1, 2, 3, 4, 5), 2);
-      assert.strictEqual(parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(0, 2, 3, 4, 5), 4);
-      assert.strictEqual(parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(0, 2, 0, 4, 5), 5);
-      assert.strictEqual(parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(1, 2, 0, 4, 5), 2);
+    it('a ? b : c ? d : e', async function () {
+      assert.strictEqual(await parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(1, 2, 3, 4, 5), 2);
+      assert.strictEqual(await parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(0, 2, 3, 4, 5), 4);
+      assert.strictEqual(await parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(0, 2, 0, 4, 5), 5);
+      assert.strictEqual(await parser.parse('a ? b : c ? d : e').toJSFunction('a,b,c,d,e')(1, 2, 0, 4, 5), 2);
     });
 
-    it('a ? b ? c : d : e', function () {
-      assert.strictEqual(parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(1, 2, 3, 4, 5), 3);
-      assert.strictEqual(parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(0, 2, 3, 4, 5), 5);
-      assert.strictEqual(parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(1, 0, 3, 4, 5), 4);
-      assert.strictEqual(parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(0, 0, 3, 4, 5), 5);
+    it('a ? b ? c : d : e', async function () {
+      assert.strictEqual(await parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(1, 2, 3, 4, 5), 3);
+      assert.strictEqual(await parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(0, 2, 3, 4, 5), 5);
+      assert.strictEqual(await parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(1, 0, 3, 4, 5), 4);
+      assert.strictEqual(await parser.parse('a ? b ? c : d : e').toJSFunction('a,b,c,d,e')(0, 0, 3, 4, 5), 5);
     });
 
-    it('a == 2 ? b + 1 : c * 2', function () {
-      assert.strictEqual(parser.parse('a == 2 ? b + 1 : c * 2').toJSFunction('a,b,c')(2, 4, 8), 5);
-      assert.strictEqual(parser.parse('a == 2 ? b + 1 : c * 2').toJSFunction('a,b,c')(1, 4, 8), 16);
-      assert.strictEqual(parser.parse('a == 2 ? b + 1 : c * 2').toJSFunction('a,b,c')('2', 4, 8), 16);
+    it('a == 2 ? b + 1 : c * 2', async function () {
+      assert.strictEqual(await parser.parse('a == 2 ? b + 1 : c * 2').toJSFunction('a,b,c')(2, 4, 8), 5);
+      assert.strictEqual(await parser.parse('a == 2 ? b + 1 : c * 2').toJSFunction('a,b,c')(1, 4, 8), 16);
+      assert.strictEqual(await parser.parse('a == 2 ? b + 1 : c * 2').toJSFunction('a,b,c')('2', 4, 8), 16);
     });
 
-    it('floor(random() * 10)', function () {
-      it('should return different numbers', function () {
+    it('floor(random() * 10)', async function () {
+      it('should return different numbers', async function () {
         var fn = Parser.parse('floor(random() * 10)').toJSFunction();
         var counts = {};
         for (var i = 0; i < 1000; i++) {
-          var x = fn();
+          var x = await fn();
           counts[x] = (counts[x] || 0) + 1;
         }
         for (i = 0; i < 10; i++) {
@@ -820,112 +820,112 @@ describe('Expression', function () {
       });
     });
 
-    it('hypot(f(), max(2, x, y))', function () {
-      assert.strictEqual(parser.parse('hypot(f(), max(2, x, y))').toJSFunction('f, x, y')(function () { return 3; }, 4, 1), 5);
+    it('hypot(f(), max(2, x, y))', async function () {
+      assert.strictEqual(await parser.parse('hypot(f(), max(2, x, y))').toJSFunction('f, x, y')(async function () { return 3; }, 4, 1), 5);
     });
 
-    it('not x or y and z', function () {
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 0, 0), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 0, 1), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 1, 0), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 1, 1), true);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 0, 0), false);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 0, 1), false);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 1, 0), false);
-      assert.strictEqual(parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 1, 1), true);
+    it('not x or y and z', async function () {
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 0, 0), true);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 0, 1), true);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 1, 0), true);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(0, 1, 1), true);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 0, 0), false);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 0, 1), false);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 1, 0), false);
+      assert.strictEqual(await parser.parse('not x or y and z').toJSFunction('x,y,z')(1, 1, 1), true);
     });
 
-    it('a < b or c > d', function () {
-      assert.strictEqual(parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(1, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(2, 2, 3, 4), false);
-      assert.strictEqual(parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(2, 2, 5, 4), true);
+    it('a < b or c > d', async function () {
+      assert.strictEqual(await parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(1, 2, 3, 4), true);
+      assert.strictEqual(await parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(2, 2, 3, 4), false);
+      assert.strictEqual(await parser.parse('a < b or c > d').toJSFunction('a,b,c,d')(2, 2, 5, 4), true);
     });
 
-    it('e <= f or g >= h', function () {
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(1, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(2, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 5, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 4, 4), true);
-      assert.strictEqual(parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 3, 4), false);
+    it('e <= f or g >= h', async function () {
+      assert.strictEqual(await parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(1, 2, 3, 4), true);
+      assert.strictEqual(await parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(2, 2, 3, 4), true);
+      assert.strictEqual(await parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 5, 4), true);
+      assert.strictEqual(await parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 4, 4), true);
+      assert.strictEqual(await parser.parse('e <= f or g >= h').toJSFunction('e,f,g,h')(3, 2, 3, 4), false);
     });
 
-    it('i == j or k != l', function () {
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(1, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(2, 2, 3, 4), true);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(1, 2, 4, 4), false);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')('2', 2, 4, 4), false);
-      assert.strictEqual(parser.parse('i == j or k != l').toJSFunction('i,j,k,l')('2', 2, '4', 4), true);
+    it('i == j or k != l', async function () {
+      assert.strictEqual(await parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(1, 2, 3, 4), true);
+      assert.strictEqual(await parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(2, 2, 3, 4), true);
+      assert.strictEqual(await parser.parse('i == j or k != l').toJSFunction('i,j,k,l')(1, 2, 4, 4), false);
+      assert.strictEqual(await parser.parse('i == j or k != l').toJSFunction('i,j,k,l')('2', 2, 4, 4), false);
+      assert.strictEqual(await parser.parse('i == j or k != l').toJSFunction('i,j,k,l')('2', 2, '4', 4), true);
     });
 
-    it('short-circuits and', function () {
-      assert.strictEqual(parser.parse('a and fail()').toJSFunction('a')(false), false);
+    it('short-circuits and', async function () {
+      assert.strictEqual(await parser.parse('a and fail()').toJSFunction('a')(false), false);
     });
 
-    it('short-circuits or', function () {
-      assert.strictEqual(parser.parse('a or fail()').toJSFunction('a')(true), true);
+    it('short-circuits or', async function () {
+      assert.strictEqual(await parser.parse('a or fail()').toJSFunction('a')(true), true);
     });
 
-    it('\'as\' || s', function () {
-      assert.strictEqual(parser.parse('\'as\' || s').toJSFunction('s')('df'), 'asdf');
-      assert.strictEqual(parser.parse('\'as\' || s').toJSFunction('s')(4), 'as4');
+    it('\'as\' || s', async function () {
+      assert.strictEqual(await parser.parse('\'as\' || s').toJSFunction('s')('df'), 'asdf');
+      assert.strictEqual(await parser.parse('\'as\' || s').toJSFunction('s')(4), 'as4');
     });
 
-    it('\'A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G\'', function () {
-      assert.strictEqual(parser.parse('\'A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G\'').toJSFunction()(), 'A\bB\tC\nD\fE\r\'F\\G');
+    it('\'A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G\'', async function () {
+      assert.strictEqual(await parser.parse('\'A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G\'').toJSFunction()(), 'A\bB\tC\nD\fE\r\'F\\G');
     });
 
-    it('"A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G"', function () {
-      assert.strictEqual(parser.parse('"A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G"').toJSFunction()(), 'A\bB\tC\nD\fE\r\'F\\G');
+    it('"A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G"', async function () {
+      assert.strictEqual(await parser.parse('"A\\bB\\tC\\nD\\fE\\r\\\'F\\\\G"').toJSFunction()(), 'A\bB\tC\nD\fE\r\'F\\G');
     });
 
-    it('"\\u2028 and \\u2029"', function () {
-      assert.strictEqual(parser.parse('"\\u2028 and \\u2029 \\u2028\\u2029"').toJSFunction()(), '\u2028 and \u2029 \u2028\u2029');
+    it('"\\u2028 and \\u2029"', async function () {
+      assert.strictEqual(await parser.parse('"\\u2028 and \\u2029 \\u2028\\u2029"').toJSFunction()(), '\u2028 and \u2029 \u2028\u2029');
     });
 
-    it('(x - 1)!', function () {
-      assert.strictEqual(parser.parse('(x - 1)!').toJSFunction('x')(1), 1);
-      assert.strictEqual(parser.parse('(x - 1)!').toJSFunction('x')(2), 1);
-      assert.strictEqual(parser.parse('(x - 1)!').toJSFunction('x')(3), 2);
-      assert.strictEqual(parser.parse('(x - 1)!').toJSFunction('x')(4), 6);
-      assert.strictEqual(parser.parse('(x - 1)!').toJSFunction('x')(5), 24);
-      assert.strictEqual(parser.parse('(x - 1)!').toJSFunction('x')(6), 120);
+    it('(x - 1)!', async function () {
+      assert.strictEqual(await parser.parse('(x - 1)!').toJSFunction('x')(1), 1);
+      assert.strictEqual(await parser.parse('(x - 1)!').toJSFunction('x')(2), 1);
+      assert.strictEqual(await parser.parse('(x - 1)!').toJSFunction('x')(3), 2);
+      assert.strictEqual(await parser.parse('(x - 1)!').toJSFunction('x')(4), 6);
+      assert.strictEqual(await parser.parse('(x - 1)!').toJSFunction('x')(5), 24);
+      assert.strictEqual(await parser.parse('(x - 1)!').toJSFunction('x')(6), 120);
     });
 
-    it('(f(x) = g(y) = x * y)(a)(b)', function () {
+    it('(f(x) = g(y) = x * y)(a)(b)', async function () {
       var f = parser.parse('(f(x) = g(y) = x * y)(a)(b)').toJSFunction('a,b');
-      assert.strictEqual(f(3, 4), 12);
-      assert.strictEqual(f(4, 5), 20);
+      assert.strictEqual(await f(3, 4), 12);
+      assert.strictEqual(await f(4, 5), 20);
     });
 
-    it('[x, y, z]', function () {
-      assert.deepStrictEqual(parser.parse('[x, y, z]').toJSFunction('x,y,z')(1, 2, 3), [1, 2, 3]);
+    it('[x, y, z]', async function () {
+      assert.deepStrictEqual(await parser.parse('[x, y, z]').toJSFunction('x,y,z')(1, 2, 3), [1, 2, 3]);
     });
 
-    it('[x, [y, [z]]]', function () {
-      assert.deepStrictEqual(parser.parse('[x, [y, [z]]]').toJSFunction('x,y,z')('abc', true, 3), ['abc', [true, [3]]]);
+    it('[x, [y, [z]]]', async function () {
+      assert.deepStrictEqual(await parser.parse('[x, [y, [z]]]').toJSFunction('x,y,z')('abc', true, 3), ['abc', [true, [3]]]);
     });
 
-    it('a[2]', function () {
-      assert.strictEqual(parser.parse('a[2]').toJSFunction('a')([ 1, 2, 3 ]), 3);
+    it('a[2]', async function () {
+      assert.strictEqual(await parser.parse('a[2]').toJSFunction('a')([ 1, 2, 3 ]), 3);
     });
 
-    it('a[2.9]', function () {
-      assert.strictEqual(parser.parse('a[2.9]').toJSFunction('a')([ 1, 2, 3, 4, 5 ]), 3);
+    it('a[2.9]', async function () {
+      assert.strictEqual(await parser.parse('a[2.9]').toJSFunction('a')([ 1, 2, 3, 4, 5 ]), 3);
     });
 
-    it('a[n]', function () {
-      assert.strictEqual(parser.parse('a[n]').toJSFunction('a,n')([ 1, 2, 3 ], 0), 1);
-      assert.strictEqual(parser.parse('a[n]').toJSFunction('a,n')([ 1, 2, 3 ], 1), 2);
-      assert.strictEqual(parser.parse('a[n]').toJSFunction('a,n')([ 1, 2, 3 ], 2), 3);
+    it('a[n]', async function () {
+      assert.strictEqual(await parser.parse('a[n]').toJSFunction('a,n')([ 1, 2, 3 ], 0), 1);
+      assert.strictEqual(await parser.parse('a[n]').toJSFunction('a,n')([ 1, 2, 3 ], 1), 2);
+      assert.strictEqual(await parser.parse('a[n]').toJSFunction('a,n')([ 1, 2, 3 ], 2), 3);
     });
 
-    it('a["foo"]', function () {
-      assert.strictEqual(parser.parse('a["foo"]').toJSFunction('a')({ foo: 42 }), undefined);
+    it('a["foo"]', async function () {
+      assert.strictEqual(await parser.parse('a["foo"]').toJSFunction('a')({ foo: 42 }), undefined);
     });
 
-    it('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]', function () {
+    it('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]', async function () {
       var exp = parser.parse('[1, 2+3, 4*5, 6/7, [8, 9, 10], "1" || "1"]');
-      assert.strictEqual(JSON.stringify(exp.toJSFunction()()), JSON.stringify([1, 5, 20, 6 / 7, [8, 9, 10], '11']));
+      assert.strictEqual(JSON.stringify(await exp.toJSFunction()()), JSON.stringify([1, 5, 20, 6 / 7, [8, 9, 10], '11']));
     });
   });
 });
